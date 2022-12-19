@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Image from "next/image"
 import { observer } from "mobx-react"
 import { store } from "../store"
@@ -6,17 +6,37 @@ import Link from "next/link"
 import { RouterParam } from "../models"
 import dynamic from "next/dynamic"
 import ActiveMenuRoundIcon from "./Icons/ActiveMenuRoundIcon"
+import { getWidth } from "../services/helper"
 
 const DynamicPageIcon = dynamic(() => import("./PageIcon"), { ssr: false })
 
 const Sidebar = () => {
   const { openDrawer, setOpenDrawer, routers, extraRouters } = store
 
+  useEffect(() => {
+    handleResize()
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize)
+      return () => {
+        window.removeEventListener("resize", handleResize)
+      }
+    }
+  }, [])
+
+  const handleResize = () => {
+    if (getWidth() < 976) {
+      setOpenDrawer(false)
+    } else {
+      setOpenDrawer(true)
+    }
+  }
+
   return (
     <div
-      className={`flex flex-col h-screen bg-white ${
+      className={`flex flex-col bg-white ${
         openDrawer ? "w-60" : "w-16"
-      } flex-none p-0 box-border`}
+      } flex-none p-0 box-border rounded-b`}
+      style={{ height: "calc(100vh - 50px)" }}
     >
       <div className="w-full flex flex-none justify-between items-center h-16 py-1 px-4">
         {openDrawer && (
@@ -41,7 +61,7 @@ const Sidebar = () => {
       <div className="flex-1 relative">
         <div
           className="mt-3 overflow-y-auto hide-scrollbar"
-          style={{ maxHeight: "calc(100vh - 195px)" }}
+          style={{ maxHeight: "calc(100vh - 245px)" }}
         >
           {routers.map((item: RouterParam) => (
             <Link href={item.route} key={item.index}>

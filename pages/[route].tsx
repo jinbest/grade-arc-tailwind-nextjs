@@ -24,7 +24,7 @@ const Slug = ({ route }: RoutePageProps) => {
   const router = useRouter()
 
   useEffect(() => {
-    onChangeRouters(route)
+    onChangeRouters(route as PageParam)
   }, [route])
 
   const onChangeRouters = (route: PageParam) => {
