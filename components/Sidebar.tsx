@@ -2,16 +2,17 @@ import React, { useEffect } from "react"
 import Image from "next/image"
 import { observer } from "mobx-react"
 import { store } from "../store"
-import Link from "next/link"
 import { RouterParam } from "../models"
 import dynamic from "next/dynamic"
 import ActiveMenuRoundIcon from "./Icons/ActiveMenuRoundIcon"
 import { getWidth } from "../services/helper"
+import { useRouter } from "next/router"
 
 const DynamicPageIcon = dynamic(() => import("./PageIcon"), { ssr: false })
 
 const Sidebar = () => {
   const { openDrawer, setOpenDrawer, routers, extraRouters } = store
+  const router = useRouter()
 
   useEffect(() => {
     handleResize()
@@ -29,6 +30,10 @@ const Sidebar = () => {
     } else {
       setOpenDrawer(true)
     }
+  }
+
+  const onRoute = (route: string) => {
+    router.push(route)
   }
 
   return (
@@ -64,61 +69,57 @@ const Sidebar = () => {
           style={{ maxHeight: "calc(100vh - 245px)" }}
         >
           {routers.map((item: RouterParam) => (
-            <Link href={item.route} key={item.index}>
-              <React.Fragment>
-                <div
-                  className={`${
-                    openDrawer ? "pl-6" : "px-0 justify-center"
-                  } flex py-0 items-center cursor-pointer hover:opacity-70 h-14`}
-                  data-tip
-                  data-for={`router-${item.index}`}
+            <div
+              className={`${
+                openDrawer ? "pl-6" : "px-0 justify-center"
+              } flex py-0 items-center cursor-pointer hover:opacity-70 h-14`}
+              onClick={() => onRoute(item.route)}
+              key={item.index}
+            >
+              <DynamicPageIcon type={item.type} active={item.active} className="shrink-0" />
+              {openDrawer && (
+                <p
+                  className={`pl-3 ${
+                    item.active ? "text-default-blue" : "text-default-disable"
+                  } font-sans`}
                 >
-                  <DynamicPageIcon type={item.type} active={item.active} className="shrink-0" />
-                  {openDrawer && (
-                    <p
-                      className={`pl-3 ${
-                        item.active ? "text-default-blue" : "text-default-disable"
-                      } font-sans`}
-                    >
-                      {item.label}
-                    </p>
-                  )}
-                  {item.active && openDrawer && (
-                    <div className="ml-auto">
-                      <ActiveMenuRoundIcon />
-                    </div>
-                  )}
+                  {item.label}
+                </p>
+              )}
+              {item.active && openDrawer && (
+                <div className="ml-auto">
+                  <ActiveMenuRoundIcon />
                 </div>
-              </React.Fragment>
-            </Link>
+              )}
+            </div>
           ))}
         </div>
 
         <div className="absolute bottom-0 left-0 w-full pb-1 border-t-2 border-default-borderCol">
           {extraRouters.map((item: RouterParam) => (
-            <Link href={item.route} key={`extra-${item.index}`}>
-              <div
-                className={`${
-                  openDrawer ? "pl-6" : "px-0 justify-center"
-                } flex py-0 items-center cursor-pointer hover:opacity-70 h-14`}
-              >
-                <DynamicPageIcon type={item.type} active={item.active} className="shrink-0" />
-                {openDrawer && (
-                  <p
-                    className={`pl-3 ${
-                      item.active ? "text-default-blue" : "text-default-disable"
-                    } font-sans`}
-                  >
-                    {item.label}
-                  </p>
-                )}
-                {item.active && openDrawer && (
-                  <div className="ml-auto">
-                    <ActiveMenuRoundIcon />
-                  </div>
-                )}
-              </div>
-            </Link>
+            <div
+              className={`${
+                openDrawer ? "pl-6" : "px-0 justify-center"
+              } flex py-0 items-center cursor-pointer hover:opacity-70 h-14`}
+              onClick={() => onRoute(item.route)}
+              key={`extra-${item.index}`}
+            >
+              <DynamicPageIcon type={item.type} active={item.active} className="shrink-0" />
+              {openDrawer && (
+                <p
+                  className={`pl-3 ${
+                    item.active ? "text-default-blue" : "text-default-disable"
+                  } font-sans`}
+                >
+                  {item.label}
+                </p>
+              )}
+              {item.active && openDrawer && (
+                <div className="ml-auto">
+                  <ActiveMenuRoundIcon />
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
