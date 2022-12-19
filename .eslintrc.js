@@ -12,6 +12,7 @@ module.exports = {
     "prettier",
   ],
   rules: {
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-interface": "off",
