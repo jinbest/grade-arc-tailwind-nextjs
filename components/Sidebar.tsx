@@ -42,7 +42,7 @@ const Sidebar = () => {
         {openDrawer && (
           <div className="flex items-center">
             <div className="border-2 border-default-lightGrey p-1 w-10 h-10 rounded flex justify-center items-center">
-              <Image src="/logo.png" alt="logo" width="20" height="20" />
+              <Image src="/logo.png" alt="logo" width="20" height="20" priority />
             </div>
             <p className="font-sans font-bold pl-2 text-lg">Grade Arc</p>
           </div>
@@ -54,7 +54,7 @@ const Sidebar = () => {
             setOpenDrawer(!openDrawer)
           }}
         >
-          <Image src="/drawer-switch.png" alt="drawer-switch" width="20" height="20" />
+          <Image src="/drawer-switch.png" alt="drawer-switch" width="20" height="20" priority />
         </div>
       </div>
 

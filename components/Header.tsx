@@ -1,10 +1,8 @@
 import React from "react"
-import { observer } from "mobx-react"
 import SearchIcon from "./Icons/SearchIcon"
 import ArrowDownIcon from "./Icons/ArrowDownIcon"
 import { user } from "../services/data"
 import Image from "next/image"
-// import { store } from "../store"
 
 const Header = () => {
   return (
@@ -29,4 +27,4 @@ const Header = () => {
   )
 }
 
-export default observer(Header)
+export default Header
