@@ -1,6 +1,5 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react"
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { store } from "../store"
 import { PageParam, RouterParam } from "../models"
 import { findIndex, cloneDeep } from "lodash"
@@ -17,17 +16,20 @@ import OtherPage from "../views/Other"
 import NotificationsPage from "../views/Notifications"
 import SettingsPage from "../views/Settings"
 
-interface RoutePageProps extends InferGetServerSidePropsType<typeof getServerSideProps> {}
-
-const Slug = ({ route }: RoutePageProps) => {
+const Slug = () => {
   const { setRouters, routers, setExtraRouters, extraRouters } = store
   const router = useRouter()
 
+  const [route, setRoute] = useState("")
+
   useEffect(() => {
-    onChangeRouters(route as PageParam)
-  }, [route])
+    if (router.query?.route) {
+      onChangeRouters(router.query.route as PageParam)
+    }
+  }, [router])
 
   const onChangeRouters = (route: PageParam) => {
+    setRoute(route)
     const cntRouters = cloneDeep(routers),
       cntExtraRouters = cloneDeep(extraRouters)
     const pageIndex = findIndex(cntRouters, (o) => o.type === route)
@@ -76,16 +78,6 @@ const Slug = ({ route }: RoutePageProps) => {
       </MainLayout>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const route = ctx.params?.route
-
-  return {
-    props: {
-      route,
-    },
-  }
 }
 
 export default observer(Slug)
