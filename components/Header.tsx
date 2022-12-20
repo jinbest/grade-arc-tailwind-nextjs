@@ -20,8 +20,8 @@ const Header = () => {
 
       <div className="absolute right-4 flex items-center cursor-pointer">
         <Image src={user.avatar} alt="avatar" width="24" height="24" className="pr-2" priority />
-        <p className="font-sans text-base pr-2 hidden lg:block">{user.name}</p>
-        <ArrowDownIcon />
+        <p className="font-sans text-base p-2 hidden lg:block">{user.name}</p>
+        <ArrowDownIcon className="pl-2" />
       </div>
     </div>
   )
