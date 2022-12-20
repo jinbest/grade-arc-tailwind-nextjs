@@ -18,3 +18,13 @@ export interface RouterParam {
   active: boolean
   index: number
 }
+
+export type CardTypeParam = "book" | "play_circle" | "book_opened"
+
+export interface CardParam {
+  type: CardTypeParam
+  count: number
+  text: string
+  bgCol: string
+  textCol: string
+}
